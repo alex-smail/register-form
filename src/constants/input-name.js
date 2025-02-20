@@ -1,5 +1,5 @@
 export const INPUT_NAME = {
-	email: 'email',
-	password: 'password',
-	confirmPassword: 'confirmPassword',
-}
+	EMAIL: 'email',
+	PASSWORD: 'password',
+	CONFIRM_PASSWORD: 'confirmPassword',
+   }
