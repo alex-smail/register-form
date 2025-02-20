@@ -1,48 +1,25 @@
-/* eslint-disable no-dupe-keys */
-import { useStore } from './hooks/useStore';
 import { AppLayout } from './app-layout';
-import { handleSubmit, handleChange } from './handlers';
-import { useState, useRef, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { INITIAL_STATE, validationSchema } from './constants';
+import { sendFormData } from './utils';
 
 const App = () => {
-	const { getState, updateState } = useStore();
-	const [validateError, setValidateError] = useState(null);
-	const [isFormValid, setIsFormValid] = useState(false);
-	const [passwordValue, setPasswordValue] = useState('');
-
-	const { email, password, confirmPassword } = getState();
-
-	const submitButtonRef = useRef(null);
-
-	useEffect(() => {
-        if (isFormValid) {
-            submitButtonRef.current.focus();
-        }
-    }, [isFormValid]);
-
-	const validState = {
-		passwordValue,
-		setPasswordValue,
-		updateState,
-		setValidateError,
-		setIsFormValid,
-		email,
-		password,
-		confirmPassword,
-	};
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		defaultValues: INITIAL_STATE,
+		resolver: yupResolver(validationSchema),
+	});
 
 	return (
 		<AppLayout
 			{...{
-				email,
-				password,
-				confirmPassword,
-				handleChange,
-				validateError,
-				isFormValid,
-				submitButtonRef,
-				handleSubmit: (event) => handleSubmit({ getState }, event),
-				handleChange: (event) => handleChange(validState, event.target),
+				errors,
+				handleSubmit: handleSubmit(sendFormData),
+				register,
 			}}
 		/>
 	);

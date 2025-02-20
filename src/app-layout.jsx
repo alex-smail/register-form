@@ -8,34 +8,42 @@ export const AppLayout = (props) => (
 			Уже есть аккаунт? <a href="#">Войти</a>
 		</p>
 		<form className={styles.form} onSubmit={props.handleSubmit}>
-			{props.validateError && (
-				<div className={styles.errorLabel}>{props.validateError}</div>
+			{props.errors.email && (
+				<div className={styles.errorLabel}>
+					{props.errors.email.message}
+				</div>
 			)}
 			<input
 				name="email"
 				type="email"
 				placeholder="Почта"
-				value={props.email}
-				onChange={props.handleChange}
+				{...props.register('email')}
 			/>
+			{props.errors.password && (
+				<div className={styles.errorLabel}>
+					{props.errors.password.message}
+				</div>
+			)}
 			<input
 				name="password"
 				type="password"
 				placeholder="Пароль"
-				value={props.password}
-				onChange={props.handleChange}
+				{...props.register('password')}
 			/>
+			{props.errors.confirmPassword && (
+				<div className={styles.errorLabel}>
+					{props.errors.confirmPassword.message}
+				</div>
+			)}
 			<input
 				name="confirmPassword"
 				type="password"
 				placeholder="Повторить пароль"
-				value={props.confirmPassword}
-				onChange={props.handleChange}
+				{...props.register('confirmPassword')}
 			/>
 			<button
-				ref={props.submitButtonRef}
 				type="submit"
-				disabled={!props.isFormValid}
+				disabled={Object.keys(props.errors).length > 0}
 			>
 				Зарегистрироваться
 			</button>
